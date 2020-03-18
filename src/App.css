@@ -36,3 +36,41 @@
     transform: rotate(360deg);
   }
 }
+.nav-bar{
+  background-color: black;
+  padding:1rem;
+   margin:10px;
+}
+
+h2{
+  text-align: center;
+  background-color:blue;
+  padding: 2rem;
+  margin: 0px;
+}
+
+.nav-button{
+  text-align: center;
+ padding: 1rem;
+}
+.game-card{
+  text-align: center;
+  border: grey solid 1px;
+  padding: 1rem;
+  width: 8rem;
+  height: 9rem;
+  display: inline-grid;
+  margin: 1rem 2rem;
+
+}
+
+.game-img {
+  justify-self: center;
+  height: 5rem;
+  width: auto;
+}
+
+.play-game{
+  padding-left: 12rem;
+  
+}
