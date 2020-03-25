@@ -20,35 +20,45 @@ import NavBarContainer from './containers/nav_bar_container';
 
 
 class App extends React.Component {
-  state = {
-    current_user:null,
-    loading: true,
-    all_games: [],
-    playing_game: null,
-    name:null,
-    username:null,
-    password:null,
-    user_collection:null
-    }
-
-
-    componentDidMount(){
-      fetch('http://localhost:3000/games')
-      .then(r => r.json())
-      .then(resp => {
-        this.setState({
-          all_games: resp,
-          loading: false
-        })
+  constructor(props) {
+    super(props);
+      this.state = {
+        current_user:null,
+        loading: true,
+        all_games: [],
+        playing_gameObj:null,
+        playing_gameId: null,
+        name:null,
+        username:null,
+        password:null,
+        user_collection:null,
+        category:null,
+        category_games:null
+      }
+    fetch('http://localhost:3000/games')
+    .then(r => r.json())
+    .then(resp => {
+      this.setState({
+        all_games: resp,
+        loading: false
       })
+    })
     }
+
+
+  
 
     handlePlayGame =(e, gameId)=>{
       
-      this.setState({
-        playing_game: gameId
-      })
 
+      fetch(`http://localhost:3000/games/${gameId}`)
+      .then(r => r.json())
+      .then(data=>{
+        this.setState({
+          playing_gameObj:data,
+          playing_gameId: gameId
+        })
+      })
     }
 
 
@@ -64,7 +74,7 @@ class App extends React.Component {
 
 
     fetchUserCollection= () =>{
-      debugger
+      
       fetch(`http://localhost:3000/collections/${this.state.current_user.id}`)
       .then(r=> r.json())
       .then(resp =>{
@@ -73,6 +83,14 @@ class App extends React.Component {
         })
       })
 
+    }
+    handleCategoryButton =(e)=>{
+      let name = e.target.id
+      this.setState({category: name})
+      fetch(`http://localhost:3000/${name}`)
+      .then(r=>r.json())
+      .then(data => this.setState({category_games: data}))
+      
     }
 
 
@@ -128,7 +146,7 @@ class App extends React.Component {
       
     }
     clickSaveGame=(event,gameId)=>{
-      debugger
+      
       if (this.state.current_user){
        let new_collection = {user_id: this.state.current_user.id, game_id:gameId}
         fetch(`http://localhost:3000/collections`,{
@@ -140,11 +158,11 @@ class App extends React.Component {
           body: JSON.stringify(new_collection)
         }).then(r=>r.json())
         .then(r=>{
-          debugger
+          
           fetch(`http://localhost:3000/games/${r.game_id}`)
           .then(r=>r.json())
           .then(resp =>{
-            debugger
+            
             this.setState({
               user_collection:[...this.state.user_collection, resp]
             })
@@ -156,19 +174,37 @@ class App extends React.Component {
     }
 
     navButtons=()=>{
-
+      
       this.setState({
-        playing_game:null
+        playing_gameId:null,
+        playing_gameObj: null,
+        category_games:null
       })
     }
 
+    unsaveGame =(e, user, gameId)=>{
+      fetch(`http://localhost:3000/collections/${user.id}/${gameId}`,{
+        method:  `DELETE`
+      })
+      .then(console.log('done'))
+      let new_array = this.state.user_collection.filter((collection)=>{
+       
+        return collection.id !== gameId 
+      })
+       debugger
+      this.setState({
+        user_collection: new_array
+      })
+      
+      // collection / user id
+
+    }
     
 
 
 
 
   render() { 
-    console.log(this.state.current_user)
     return (  
 
       <div>
@@ -177,22 +213,31 @@ class App extends React.Component {
 
       <Router>
           <Switch>
-
+           
             
             <Route exact path ='/games/:id' render={(props) =>{
               let id = props.match.params.id
-              let found_game = this.state.all_games.find(game => game.id == id)
+              let found_game = this.state.playing_gameObj
+              
+             
               return <ShowGameContainer currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
             }}>
               
             </Route>
             {
-              this.state.playing_game?
-              <Redirect to= {`/games/${this.state.playing_game}`} /> :    
+              this.state.playing_gameId && this.state.playing_gameObj?
+              <Redirect to= {`/games/${this.state.playing_gameId}`} /> :    
               <Route exact path='/games'>
-                <AllGamesContainer gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>
+                {
+                  !this.state.category_games ?
+                  <AllGamesContainer currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
+                  <AllGamesContainer currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
+             }
               </Route>
             }
+             <Route exact path = '/'>
+              <Redirect to ='/games'/>
+            </Route>
 
             <Route exact path ='/signup'>
 
@@ -201,7 +246,7 @@ class App extends React.Component {
             </Route>
             <Route exact path='/collection' render={()=>{
              return this.state.current_user ?             
-              <CollectionContainer handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/>:<Redirect to ='/login'/>
+              <CollectionContainer unsavegame = {this.unsaveGame} currentUser ={this.state.current_user}handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/> : <Redirect to ='/login'/>
               }}>
             </Route>
             {
@@ -213,14 +258,6 @@ class App extends React.Component {
 
 
             }
-
-
-
-
-  
-            
-
-
 
             <Route exact path='/'>
               <HomeContainer />

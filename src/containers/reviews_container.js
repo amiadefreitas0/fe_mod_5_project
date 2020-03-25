@@ -12,7 +12,6 @@ class ReviewContainer extends React.Component {
 
     handleClickNewReview=(event)=>{
         if (this.props.currentUser){
-            console.log(this.props.reviewFormToggle)
            this.props.reviewFormToggle()
 
         }else{
@@ -30,7 +29,6 @@ class ReviewContainer extends React.Component {
 
 
     render() { 
-        console.log(this.props)
         return (  
             <div>
                 {

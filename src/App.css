@@ -63,6 +63,9 @@ h2{
   margin: 1rem 2rem;
 
 }
+.current-user{
+  color: white;
+}
 
 .game-img {
   justify-self: center;
