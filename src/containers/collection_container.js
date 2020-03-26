@@ -11,7 +11,7 @@ class CollectionContainer extends React.Component {
     render() { 
         return (
             <div className = 'collection-container'> 
-            <NavBarContainer currentUser ={this.props.currentUser}/>
+            <NavBarContainer logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentUser}/>
             <h2> User Collections</h2>
               {this.props.collection?
                   this.props.collection.map((game)=>{

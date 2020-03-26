@@ -7,7 +7,7 @@ class LoginBtn extends Component {
         return (  
             <div>
                 <Link to ='/login'>
-                <button> Login </button>
+                <button onClick={this.props.navBtn}> Login </button>
                 </Link>
             </div>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBarContainer from './nav_bar_container';
 import ReviewContainer from './reviews_container';
-
+import {Redirect } from "react-router-dom";
 
 class ShowGameContainer extends React.Component {
 
@@ -84,13 +84,15 @@ class ShowGameContainer extends React.Component {
         { if (this.props.gameObj){
 
            return (
-    
+               
                <div className = 'show-game'>
-                   
-                       <NavBarContainer navButtons={this.props.navButtons}/>
+                
+
+                       <NavBarContainer  logoutbtn ={this.props.logoutbtn}  currentUser ={this.props.currentUser} navButtons={this.props.navButtons}/>
                        <h2 className ='game-name'>{this.props.gameObj.title}</h2> 
                        <iframe className='play-game'src={this.props.gameObj.game_src} width="800" height="600" scrolling="none" frameborder="0"></iframe>
                        <div> rating:{this.props.gameObj.game_rating} </div>
+                      
                        <div> category:{this.props.gameObj.categories[0].name} </div>
                        <h2> Description:</h2>
                        <div className ='game-description'>{this.props.gameObj.description}</div> 

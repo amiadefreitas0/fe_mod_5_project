@@ -9,7 +9,7 @@ class AllGamesContainer extends React.Component {
        
         return (
             <div> 
-                <NavBarContainer currentUser ={this.props.currentuser} navButtons ={this.props.navButtons}/>
+                <NavBarContainer  logoutbtn ={this.props.logoutbtn} currentUser ={this.props.currentuser} navButtons ={this.props.navButtons}/>
                 <CategoriesContainer handleCategoryButton={this.props.handleCategoryButton}/>
            
         <h2>{!this.props.category? 'ALL GAMES' : this.props.category.toUpperCase()}</h2>

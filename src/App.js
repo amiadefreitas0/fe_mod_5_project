@@ -33,7 +33,8 @@ class App extends React.Component {
         password:null,
         user_collection:null,
         category:null,
-        category_games:null
+        category_games:null,
+        go_home: false
       }
     fetch('http://localhost:3000/games')
     .then(r => r.json())
@@ -110,7 +111,8 @@ class App extends React.Component {
       .then(resp => resp.json())
       .then(r =>{
           this.setState({
-            current_user: r
+            current_user: r,
+            go_home: true
           })
       } )
       
@@ -173,13 +175,28 @@ class App extends React.Component {
 
     }
 
-    navButtons=()=>{
-      
-      this.setState({
-        playing_gameId:null,
-        playing_gameObj: null,
-        category_games:null
-      })
+    navButtons=(event)=>{
+      debugger
+      if (event.target.id == 'all-games-btn'){
+
+        this.setState({
+          playing_gameId:null,
+          playing_gameObj: null,
+          category_games:null,
+          go_home: true,
+          go_collection: false
+        })
+
+      }else{
+        this.setState({
+          playing_gameId:null,
+          playing_gameObj: null,
+          category_games:null,
+          go_home: false,
+          go_collection: true
+        })
+      }
+
     }
 
     unsaveGame =(e, user, gameId)=>{
@@ -191,7 +208,6 @@ class App extends React.Component {
        
         return collection.id !== gameId 
       })
-       debugger
       this.setState({
         user_collection: new_array
       })
@@ -200,7 +216,13 @@ class App extends React.Component {
 
     }
     
+    logoutbtn = ()=>{
+      this.setState({
+        current_user: null
+      })
 
+
+    }
 
 
 
@@ -220,7 +242,7 @@ class App extends React.Component {
               let found_game = this.state.playing_gameObj
               
              
-              return <ShowGameContainer currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
+              return <ShowGameContainer go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
             }}>
               
             </Route>
@@ -230,23 +252,25 @@ class App extends React.Component {
               <Route exact path='/games'>
                 {
                   !this.state.category_games ?
-                  <AllGamesContainer currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
-                  <AllGamesContainer currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
+                  <AllGamesContainer logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
+                  <AllGamesContainer logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
              }
               </Route>
             }
              <Route exact path = '/'>
               <Redirect to ='/games'/>
             </Route>
-
+    {       !this.state.current_user?
             <Route exact path ='/signup'>
+              
+              <SignupContainer handleOnChangeForm={this.handleOnChangeForm} handleSignupForm ={this.handleSignupForm}/>
+                
+            </Route>: null
+          }
 
-            <SignupContainer handleOnChangeForm={this.handleOnChangeForm} handleSignupForm ={this.handleSignupForm}/>
-
-            </Route>
             <Route exact path='/collection' render={()=>{
              return this.state.current_user ?             
-              <CollectionContainer unsavegame = {this.unsaveGame} currentUser ={this.state.current_user}handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/> : <Redirect to ='/login'/>
+              <CollectionContainer  logoutbtn ={this.logoutbtn} unsavegame = {this.unsaveGame} currentUser ={this.state.current_user}handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/> : <Redirect to ='/login'/>
               }}>
             </Route>
             {
@@ -258,6 +282,15 @@ class App extends React.Component {
 
 
             }
+               {
+                     this.state.go_home?
+                     <Redirect to= '/games'/>:null
+                   }
+                   {
+                     this.state.go_collection?
+                     <Redirect to= '/collection'/>:null
+                   }
+             
 
             <Route exact path='/'>
               <HomeContainer />
