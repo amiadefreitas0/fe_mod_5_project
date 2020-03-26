@@ -15,6 +15,10 @@ class NavBarContainer extends React.Component {
         
         return ( 
             <div className ='nav-bar'>
+                {
+                    this.props.currentUser?
+                    <LoggedIn  logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentUser}/> : <LoginBtn navBtn ={this.props.navButtons}/>
+                }
                 <Link to ='/games'>
                     <button id='all-games-btn'className='nav-button' onClick={this.props.navButtons}> All Game</button>
                 
@@ -24,10 +28,6 @@ class NavBarContainer extends React.Component {
                     <button id='collection-btn' className='nav-button' onClick={this.props.navButtons}> Collection </button>
 
                 </Link>
-                {
-                    this.props.currentUser?
-                    <LoggedIn  logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentUser}/> : <LoginBtn navBtn ={this.props.navButtons}/>
-                }
                
                    
 

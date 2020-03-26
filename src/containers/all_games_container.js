@@ -8,11 +8,11 @@ class AllGamesContainer extends React.Component {
     render() { 
        
         return (
-            <div> 
+            <div className ='all-games'> 
                 <NavBarContainer  logoutbtn ={this.props.logoutbtn} currentUser ={this.props.currentuser} navButtons ={this.props.navButtons}/>
-                <CategoriesContainer handleCategoryButton={this.props.handleCategoryButton}/>
            
         <h2>{!this.props.category? 'ALL GAMES' : this.props.category.toUpperCase()}</h2>
+        <CategoriesContainer handleCategoryButton={this.props.handleCategoryButton}/>
                 {this.props.gamesArray.map((game)=>{
                     return <GameCard  key ={game.id}handleplaygame = {this.props.handlePlayGame} gameObj = {game} />
                 })}

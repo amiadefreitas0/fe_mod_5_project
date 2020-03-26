@@ -37,21 +37,25 @@
   }
 }
 .nav-bar{
-  background-color: black;
+  background-color: transparent;
   padding:1rem;
-   margin:10px;
+   margin:0px;
+   background-image: url('https://media1.tenor.com/images/0b55118beb391363d00313ba8ab116f7/tenor.gif?itemid=11184726');
+
 }
 
 h2{
   text-align: center;
-  background-color:blue;
+  background-image: url('https://media1.tenor.com/images/0b55118beb391363d00313ba8ab116f7/tenor.gif?itemid=11184726');
   padding: 2rem;
-  margin: 0px;
+  margin:0px;
+  color: white;
 }
 
 .nav-button{
   text-align: center;
  padding: 1rem;
+ margin-left: 300px;
 }
 .game-card{
   text-align: center;
@@ -76,4 +80,28 @@ h2{
 .play-game{
   padding-left: 12rem;
   
+}
+.nav-button{
+  color: aqua;
+  background-color:transparent;
+  margin-right: 20px;
+  border: none;
+  font-size: medium ;
+}
+
+.nav-button:hover{
+ color: white;
+ text-decoration: underline;
+  margin-left: 305px;
+}
+
+.login-btn{
+  margin-bottom: 0px;
+  margin-left:1000px;
+}
+.all-games{
+
+    background-color: #090729;
+
+
 }
