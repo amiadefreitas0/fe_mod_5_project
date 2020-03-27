@@ -7,7 +7,7 @@ class GameCard extends React.Component {
 
         
         return ( 
-            <div class="ui six cards">
+            <div class="ui cards">
                 <div class="ui raised card">
                     <div class="content">
                         <img onClick ={(event, gameId = this.props.gameObj.id) =>{

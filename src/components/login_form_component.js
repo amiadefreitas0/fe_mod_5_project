@@ -7,21 +7,27 @@ class LoginFormComponent extends React.Component {
   
     render() { 
         return (  
-            <div>
-                <NavBarContainer/>
-            <form onSubmit = {this.props.handleLoginForm}> 
+            <div>            
                 
-                    <label for="name">Username:</label>
-                    <input type = 'text' id='username' onChange ={this.props.handleOnChangeForm }/><br></br>
-                    <label for="name">Password:</label>
-                    <input type = 'password' id ='password' onChange ={this.props.handleOnChangeForm }/><br></br>
-                    <button type="submit" value="Submit">Submit</button>
+                <span className='open-nav'onClick={this.props.openNav}>&#9776;</span>
+
+                <NavBarContainer navButtons ={this.props.navButtons} closeNav ={this.props.closeNav}/>
                     
-                    <Link to ='/signup'>
-                        <button>Signup</button>
+                    <form onSubmit = {this.props.handleLoginForm} class="ui form">
+                    <div class="field">
+                    <input placeholder="First Name" id='username' onChange ={this.props.handleOnChangeForm }/>
+                    </div>
+                    <div class="password-field">
+                    <input id ='password' onChange ={this.props.handleOnChangeForm }placeholder="Password" />
+                    </div>
                     
-                    </Link>
-            </form>
+                    
+                    <button type="submit" class="ui button">Submit</button>
+                                <Link to ='/signup'>
+                                    <button>Signup</button>
+                                
+                                </Link>
+                </form>
          </div>
         );
     }

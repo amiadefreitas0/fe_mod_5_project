@@ -30,53 +30,9 @@ class ShowGameContainer extends React.Component {
     }
 
 
-    reviewFormToggle=(event)=>{
-        
-        if (this.state.reviewFormDisplay == false){
-            this.setState({
-                reviewFormDisplay: true
-            })
+   
 
-        }else{
-            this.setState({
-                reviewFormDisplay: false
-
-            })
-        }
-
-    }
-
-    postAComment = (event, review)=>{
-        
-        if (this.props.currentUser ){
-            this.setState({
-                currentUser:true
-            })
-            let gameId = this.props.gameObj.id
-        
-            let new_review ={text: review, game_id: gameId, user_id:this.props.currentUser.id}
-            fetch(`http://localhost:3000/reviews`,{
-                method: 'POST', 
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-                },
-                body: JSON.stringify(new_review)
-            })
-            .then(r =>r.json())
-            .then(data=>{
-                this.setState({reviews:[...this.state.reviews,data]})
-            })
-        }else{
-            this.setState({
-                currentUser:false
-            })
-        }
-
-
-
-
-    }
+  
 
 
     render() {
@@ -99,15 +55,15 @@ class ShowGameContainer extends React.Component {
                        <iframe className='play-game'src={this.props.gameObj.game_src} width="800" height="600" scrolling="none" frameborder="0"></iframe>
                        
                       
-                       <div class="ui card">
+                       <div class="ui fluid card" id='game-desc'>
                         <div class="content">
                             <div class="header">{this.props.gameObj.title}</div>
                         </div>
                         <div class="content">
-                            <div class="header">Rating:{this.props.gameObj.game_rating}</div>
+                            <div class="header">Rating: {this.props.gameObj.game_rating}</div>
                         </div>
                         <div class="content">
-                            <div class="header">Category:{this.props.gameObj.categories[0].name}</div>
+                            <div class="header">Category: {this.props.gameObj.categories[0].name}</div>
                         </div>
                             <div class="content">
                                 <div class="description">
@@ -115,13 +71,18 @@ class ShowGameContainer extends React.Component {
                                 </div>
                             </div>
                             <div class="content">
-                                <ReviewContainer currentUser ={this.props.currentUser}postAComment = {this.postAComment} reviewFormDisplay={this.state.reviewFormDisplay} reviewFormToggle = {this.reviewFormToggle}reviews ={this.state.reviews}/>
+                                {
+                                    this.props.reviews?
+                                    <ReviewContainer gameObj={this.props.gameObj} redirect ={this.props.redirect}handleClickNewReview={this.props.handleClickNewReview}currentUser ={this.props.currentUser}postAComment = {this.props.postAComment} reviewFormDisplay={this.props.reviewFormDisplay} reviewFormToggle = {this.props.reviewFormToggle}reviews ={this.props.reviews}/>:
+                                    <ReviewContainer gameObj={this.props.gameObj} redirect ={this.props.redirect}handleClickNewReview={this.props.handleClickNewReview}currentUser ={this.props.currentUser}postAComment = {this.props.postAComment} reviewFormDisplay={this.props.reviewFormDisplay} reviewFormToggle = {this.props.reviewFormToggle}reviews ={this.state.reviews}/>
+                                }
 
                             </div>
-                            <div class ='extra content'>
-                            <button class ="ui green basic button"onClick = {(event, gameId = this.props.gameObj.id)=>this.props.clickSaveGame(event,gameId)}className="save-button">Save Game</button>
-
-                            </div>
+                                <div class ='extra content'>
+                                    <div class="ui buttons">
+                                        <button class ="ui green inverted button" onClick = {(event, gameId = this.props.gameObj.id)=>this.props.clickSaveGame(event,gameId)}>Save Game</button>
+                                    </div>
+                                </div>
 
                         </div>
                </div> 

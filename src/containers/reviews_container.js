@@ -6,25 +6,11 @@ import { Redirect } from 'react-router-dom';
 class ReviewContainer extends React.Component {
 
     state={
-        redirect:false
+
         
     }
 
-    handleClickNewReview=(event)=>{
-        if (this.props.currentUser){
-           this.props.reviewFormToggle()
-
-        }else{
-            this.setState({
-                redirect:true
-            })
-
-
-
-        }
-       
-
-    }
+  
 
 
 
@@ -32,10 +18,10 @@ class ReviewContainer extends React.Component {
         return (  
             <div>
                 {
-                    this.state.redirect?
+                    this.props.redirect?
                     <Redirect to ='/login'/>: null
                 }
-                <h3> Reviews</h3>
+                <h3 className='header'> Reviews</h3>
                      <table>
                     {this.props.reviews && !this.props.reviews.length == 0?
                         this.props.reviews.map((review)=>{
@@ -49,11 +35,16 @@ class ReviewContainer extends React.Component {
                         
                     }
                 </table>
-                    <button onClick={this.handleClickNewReview}> create a new review</button>
-
+                    <div id = 'review 'onClick ={this.props.handleClickNewReview} class="ui  button" tabindex="0">
+                            <div id = 'review 'onClick ={this.props.handleClickNewReview} class="visible content">
+                            write a review!
+                            </div>
+                          
+                    </div>
                     {this.props.reviewFormDisplay == true?
-                    <ReviewFormComponent postAComment ={this.props.postAComment}/>: null
+                    <ReviewFormComponent gameObj={this.props.gameObj}postAComment ={this.props.postAComment}/>: null
                     }
+                  
                 
             </div>
         );

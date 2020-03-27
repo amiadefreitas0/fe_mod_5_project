@@ -97,7 +97,7 @@ h2{
 
 .play-game{
   margin-left: 180px;
-  
+  background-color: rgb(27, 27, 27);
 }
 
 
@@ -105,6 +105,9 @@ h2{
 .login-btn{
   margin-bottom: 0px;
   margin-left:1000px;
+  list-style-type: none;
+  overflow: hidden;
+
 }
 .all-games{
 
@@ -133,4 +136,18 @@ h2{
 
 html{
   background-color: #090729;
+}
+#game-desc{
+  background-color: rgb(151, 148, 155);
+}
+.header{
+  text-align: center;
+}
+
+.ui.green.basic.inverted.button{
+
+  margin-left: 500px;
+}
+table{
+  margin-left:500px ;
 }

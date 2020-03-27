@@ -5,7 +5,7 @@ class LoginBtn extends Component {
  
     render() { 
         return (  
-            <div>
+            <div horizontal layout>
                 <Link to ='/login'>
                 <button className='login-btn' onClick={this.props.navBtn}> Login </button>
                 </Link>

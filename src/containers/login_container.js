@@ -6,7 +6,7 @@ class LoginContainer extends React.Component {
     render() { 
         return (
            <div className='login-container'>
-               <LoginForm handleLoginForm={this.props.handleLoginForm}handleOnChangeForm={this.props.handleOnChangeForm}/>
+               <LoginForm openNav ={this.props.openNav}closeNav ={this.props.closeNav} handleLoginForm={this.props.handleLoginForm}handleOnChangeForm={this.props.handleOnChangeForm}navButtons ={this.props.navButtons}/>
            </div>
 
 

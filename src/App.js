@@ -17,7 +17,8 @@ import LoginContainer from './containers/login_container';
 import SignupContainer from './containers/signup_container';
 import NavBarContainer from './containers/nav_bar_container';
 
-
+import LoggedIn from './components/login_component';
+import LoginBtn from './components/loginbtn';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,7 +36,10 @@ class App extends React.Component {
         user_collection:null,
         category:null,
         category_games:null,
-        go_home: false
+        go_home: false,
+        redirect:false,
+        reviewFormDisplay:null,
+        reviews:null
       }
     fetch('http://localhost:3000/games')
     .then(r => r.json())
@@ -99,6 +103,8 @@ class App extends React.Component {
 
 
     handleSignupForm = (e)=>{
+      document.querySelector('html').style.marginLeft= '0px'
+
       e.preventDefault()
 
       const newUser ={name: this.state.name, username: this.state.username, password: this.state.password}
@@ -121,6 +127,8 @@ class App extends React.Component {
     }
 
     handleLoginForm = (e)=>{
+      document.querySelector('html').style.marginLeft= '0px'
+
       e.preventDefault()
       const newUser ={ username: this.state.username, password: this.state.password}
       
@@ -179,6 +187,10 @@ class App extends React.Component {
 
     navButtons=(event)=>{
       debugger
+      document.querySelector('html').style.marginLeft= '0px'
+     
+
+
       if (event.target.id == 'all-games-btn'){
 
         this.setState({
@@ -229,10 +241,11 @@ class App extends React.Component {
 
     }
     closeNav =(event)=>{
-      debugger
-     
-      event.target.parentElement.style.width = "0"
-      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.style.marginLeft ='0'    
+      
+      document.querySelector('html').style.marginLeft = '0px'
+
+      event.target.parentElement.style.width = "0px"
+      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.style.marginLeft ='0px'    
         this.setState({
         navBarDisplay: false
       })
@@ -240,15 +253,89 @@ class App extends React.Component {
 
   
     openNav =(event)=>{
-       
-       document.querySelector('.nav-bar').style.width = '250px'
-      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.style.marginLeft='250px'
+   
+      document.querySelector('.nav-bar').style.width = '250px'
+      document.querySelector('html').style.marginLeft = '250px'
       this.setState({
         navBarDisplay: true
       })
       // return this.displayNavBar
     }
 
+    fetchReviews=(gameObj)=>{
+      debugger
+        let gameId = gameObj.id
+        fetch(`http://localhost:3000/reviews/game/${gameId}`)
+        .then(resp => resp.json())
+        .then(r => this.setState({reviews:r}))
+
+    }
+
+
+
+
+    postAComment = (event, review,gameObj)=>{
+      event.preventDefault()
+        debugger
+      if (this.state.current_user ){
+          this.setState({
+              currentUser:true
+          })
+          this.fetchReviews(gameObj)
+          let gameId = gameObj.id
+      
+          let new_review ={text: review, game_id: gameId, user_id:this.state.current_user.id}
+          fetch(`http://localhost:3000/reviews`,{
+              method: 'POST', 
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(new_review)
+          })
+          .then(r =>r.json())
+          .then(data=>{
+            debugger
+              this.setState({reviews:[data]})
+          })
+      }else{
+          this.setState({
+              currentUser:false
+          })
+      }
+  }
+
+  reviewFormToggle=(event)=>{
+    debugger
+        
+    if (this.state.reviewFormDisplay == false){
+        this.setState({
+            reviewFormDisplay: true
+        })
+
+    }else{
+        this.setState({
+            reviewFormDisplay: false
+
+        })
+    }
+
+}
+
+
+  handleClickNewReview=(event)=>{
+    if (this.state.current_user){
+       return this.reviewFormToggle(event)
+
+    }else{
+      return null
+
+
+
+    }
+   
+
+}
 
     
     
@@ -260,7 +347,7 @@ class App extends React.Component {
 
       <div>
         {!this.state.loading?
-
+  
 
       <Router>
           <Switch>
@@ -269,9 +356,17 @@ class App extends React.Component {
             <Route exact path ='/games/:id' render={(props) =>{
               let id = props.match.params.id
               let found_game = this.state.playing_gameObj
-              
+                if(!this.state.reviews){
+
+                  return <ShowGameContainer reviewFormDisplay={this.state.reviewFormDisplay} reviewFormToggle={this.reviewFormToggle} redirect ={this.state.redirect} handleClickNewReview ={this.handleClickNewReview}postAComment={this.postAComment}openNav ={this.openNav}closeNav ={this.closeNav} go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
+                  
+                  
+                  
+                }else{
+                  return <ShowGameContainer reviews={this.state.reviews} reviewFormDisplay={this.state.reviewFormDisplay} reviewFormToggle={this.reviewFormToggle} redirect ={this.state.redirect} handleClickNewReview ={this.handleClickNewReview}postAComment={this.postAComment}openNav ={this.openNav}closeNav ={this.closeNav} go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
+
+                }
              
-              return <ShowGameContainer openNav ={this.openNav}closeNav ={this.closeNav} go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
             }}>
               
             </Route>
@@ -281,7 +376,7 @@ class App extends React.Component {
               <Route exact path='/games'>
                 {
                   !this.state.category_games ?
-                  <AllGamesContainer openNav ={this.openNav}closeNav ={this.closeNav}logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
+                  <AllGamesContainer openNav ={this.openNav}closeNav ={this.closeNav}logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons ={this.navButtons}gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
                   <AllGamesContainer openNav ={this.openNav}closeNav ={this.closeNav}logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
              }
               </Route>
@@ -299,18 +394,19 @@ class App extends React.Component {
 
             <Route exact path='/collection' render={()=>{
              return this.state.current_user ?             
-              <CollectionContainer  logoutbtn ={this.logoutbtn} unsavegame = {this.unsaveGame} currentUser ={this.state.current_user}handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/> : <Redirect to ='/login'/>
+              <CollectionContainer navButtons ={this.navButtons} openNav ={this.openNav}closeNav ={this.closeNav} logoutbtn ={this.logoutbtn} unsavegame = {this.unsaveGame} currentUser ={this.state.current_user}handlePlayGame = {this.handlePlayGame} collection={this.state.user_collection}/> : <Redirect to ='/login'/>
               }}>
             </Route>
             {
               this.state.current_user ?
               <Redirect to ='/collection'/>:
             <Route exact path ='/login'>
-              <LoginContainer handleLoginForm ={this.handleLoginForm}handleOnChangeForm={this.handleOnChangeForm} />
+              <LoginContainer openNav ={this.openNav}closeNav ={this.closeNav} handleLoginForm ={this.handleLoginForm}handleOnChangeForm={this.handleOnChangeForm} navButtons ={this.navButtons}/>
             </Route>
 
 
             }
+            
                {
                      this.state.go_home?
                      <Redirect to= '/games'/>:null
@@ -324,6 +420,11 @@ class App extends React.Component {
                
                this.closeNav : this.openNav
              }
+                        {
+                    this.props.currentUser?
+                    <LoggedIn  logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentUser}/> : <LoginBtn navBtn ={this.props.navButtons}/>
+                }
+            
 
             <Route exact path='/'>
               <HomeContainer />

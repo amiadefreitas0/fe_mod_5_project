@@ -13,6 +13,11 @@ class AllGamesContainer extends React.Component {
             <div className ='all-games'> 
 
             <span className='open-nav'onClick={this.props.openNav}>&#9776;</span>
+
+            {
+                    this.props.currentuser?
+                    <LoggedIn  logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentuser}/> : <LoginBtn navBtn ={this.props.navButtons}/>
+                }
                 <NavBarContainer closeNav ={this.props.closeNav} logoutbtn ={this.props.logoutbtn} currentUser ={this.props.currentuser} navButtons ={this.props.navButtons}/>
            
         <h2>{!this.props.category? 'ALL GAMES' : this.props.category.toUpperCase()}</h2>
