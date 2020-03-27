@@ -35,7 +35,7 @@ class ReviewContainer extends React.Component {
                     this.state.redirect?
                     <Redirect to ='/login'/>: null
                 }
-                <h2> Reviews</h2>
+                <h3> Reviews</h3>
                      <table>
                     {this.props.reviews && !this.props.reviews.length == 0?
                         this.props.reviews.map((review)=>{

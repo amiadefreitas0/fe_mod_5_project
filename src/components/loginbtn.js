@@ -9,7 +9,7 @@ class LoginBtn extends Component {
                 <Link to ='/login'>
                 <button className='login-btn' onClick={this.props.navBtn}> Login </button>
                 </Link>
-                or
+                 
                 <Link to='/signup'>
                 <button className='login-btn' onClick={this.props.navBtn}> Signup </button>
                 </Link>

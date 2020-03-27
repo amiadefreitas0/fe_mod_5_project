@@ -19,6 +19,8 @@ class NavBarContainer extends React.Component {
                     this.props.currentUser?
                     <LoggedIn  logoutbtn ={this.props.logoutbtn}currentUser ={this.props.currentUser}/> : <LoginBtn navBtn ={this.props.navButtons}/>
                 }
+                  <a href="javascript:void(0)" class="closebtn" onClick={this.props.closeNav}>&times;</a>
+
                 <Link to ='/games'>
                     <button id='all-games-btn'className='nav-button' onClick={this.props.navButtons}> All Game</button>
                 

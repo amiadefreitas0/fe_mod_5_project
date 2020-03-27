@@ -6,7 +6,7 @@ class CategoriesContainer extends Component {
     render() { 
         return ( 
             <div>
-                categories 
+               <div className ='category-header'> Categories </div>
                 <CategoryButtonComponent handleCategoryButton={this.props.handleCategoryButton}/>
             </div>
          );

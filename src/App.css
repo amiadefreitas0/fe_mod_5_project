@@ -1,99 +1,106 @@
-.App {
-  text-align: center;
+body {
+  font-family: "Lato", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.nav-bar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.nav-bar{
+.nav-bar button{
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
   background-color: transparent;
-  padding:1rem;
-   margin:0px;
-   background-image: url('https://media1.tenor.com/images/0b55118beb391363d00313ba8ab116f7/tenor.gif?itemid=11184726');
+  border:0px;
 
 }
+
+.nav-bar button:hover {
+  color: #f1f1f1;
+}
+
+.nav-bar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .nav-bar {padding-top: 15px;}
+  .nav-bar button {font-size: 18px;}
+}
+.open-nav{
+  color: white;
+  font-size: 2rem;
+}
+ 
+body{
+  background-color: #090729c1;
+}
+
 
 h2{
   text-align: center;
   background-image: url('https://media1.tenor.com/images/0b55118beb391363d00313ba8ab116f7/tenor.gif?itemid=11184726');
-  padding: 2rem;
+  padding: 5rem;
   margin:0px;
   color: white;
+  background-size: cover;
+  font-size: 26px;
+  padding-left: 100px;
 }
 
-.nav-button{
-  text-align: center;
- padding: 1rem;
- margin-left: 300px;
-}
 .game-card{
   text-align: center;
   border: grey solid 1px;
   padding: 1rem;
+  padding-top: 0px;
+  padding-right: 0%;
+  padding-left: 0%;
   width: 8rem;
   height: 9rem;
   display: inline-grid;
   margin: 1rem 2rem;
 
 }
+.game-card:hover{
+  background-color: rgb(165, 157, 157);
+}
+.game-name{
+  color: white
+}
+
+
 .current-user{
   color: white;
 }
 
 .game-img {
-  justify-self: center;
-  height: 5rem;
-  width: auto;
+  width: 100%; 
+  height: 100%; 
 }
 
 .play-game{
-  padding-left: 12rem;
+  margin-left: 180px;
   
 }
-.nav-button{
-  color: aqua;
-  background-color:transparent;
-  margin-right: 20px;
-  border: none;
-  font-size: medium ;
-}
 
-.nav-button:hover{
- color: white;
- text-decoration: underline;
-  margin-left: 305px;
-}
+
 
 .login-btn{
   margin-bottom: 0px;
@@ -101,7 +108,29 @@ h2{
 }
 .all-games{
 
-    background-color: #090729;
+  background-color: #090729;
 
 
+}
+.category-header{
+  margin-left: 23rem;
+  font-size: 22px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+}
+
+.category-container{
+  margin-left: 15rem;
+  color: white;
+}
+
+.games-container{
+  margin-left: 5rem;
+    display: grid;
+    margin-left: 450px;
+}
+
+html{
+  background-color: #090729;
 }

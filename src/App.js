@@ -23,6 +23,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
       this.state = {
+        navBarDisplay:false,
         current_user:null,
         loading: true,
         all_games: [],
@@ -86,6 +87,7 @@ class App extends React.Component {
 
     }
     handleCategoryButton =(e)=>{
+      debugger
       let name = e.target.id
       this.setState({category: name})
       fetch(`http://localhost:3000/${name}`)
@@ -184,7 +186,8 @@ class App extends React.Component {
           playing_gameObj: null,
           category_games:null,
           go_home: true,
-          go_collection: false
+          go_collection: false,
+          navBarDisplay: false
         })
 
       }else{
@@ -193,7 +196,9 @@ class App extends React.Component {
           playing_gameObj: null,
           category_games:null,
           go_home: false,
-          go_collection: true
+          go_collection: true,
+          navBarDisplay: false
+
         })
       }
 
@@ -223,7 +228,31 @@ class App extends React.Component {
 
 
     }
+    closeNav =(event)=>{
+      debugger
+     
+      event.target.parentElement.style.width = "0"
+      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.style.marginLeft ='0'    
+        this.setState({
+        navBarDisplay: false
+      })
+    }
 
+  
+    openNav =(event)=>{
+       
+       document.querySelector('.nav-bar').style.width = '250px'
+      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.style.marginLeft='250px'
+      this.setState({
+        navBarDisplay: true
+      })
+      // return this.displayNavBar
+    }
+
+
+    
+    
+   
 
 
   render() { 
@@ -242,7 +271,7 @@ class App extends React.Component {
               let found_game = this.state.playing_gameObj
               
              
-              return <ShowGameContainer go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
+              return <ShowGameContainer openNav ={this.openNav}closeNav ={this.closeNav} go_home ={this.state.go_home} logoutbtn ={this.logoutbtn} currentUser ={this.state.current_user} navButtons={this.navButtons}clickSaveGame={this.clickSaveGame} gameObj = {found_game}/>
             }}>
               
             </Route>
@@ -252,8 +281,8 @@ class App extends React.Component {
               <Route exact path='/games'>
                 {
                   !this.state.category_games ?
-                  <AllGamesContainer logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
-                  <AllGamesContainer logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
+                  <AllGamesContainer openNav ={this.openNav}closeNav ={this.closeNav}logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} gamesArray={this.state.all_games} handlePlayGame = {this.handlePlayGame}/>:
+                  <AllGamesContainer openNav ={this.openNav}closeNav ={this.closeNav}logoutbtn ={this.logoutbtn} currentuser ={this.state.current_user}handleCategoryButton={this.handleCategoryButton} navButtons = {this.navButtons}gamesArray={this.state.category_games} category ={this.state.category} handlePlayGame = {this.handlePlayGame}/>
              }
               </Route>
             }
@@ -290,7 +319,11 @@ class App extends React.Component {
                      this.state.go_collection?
                      <Redirect to= '/collection'/>:null
                    }
-             
+             {
+               !this.state.navBarDisplay?
+               
+               this.closeNav : this.openNav
+             }
 
             <Route exact path='/'>
               <HomeContainer />
